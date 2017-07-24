@@ -1,0 +1,13 @@
+<html xmlns:th="http://www.springframework.org/schema/data/jaxb">
+<head>
+    <title>Oops!</title>
+    <link rel="stylesheet" th:href="@{/style.css}"/>
+</head>
+<body class="errorPage">
+    <span class="oops">Oops!</span><br/>
+    <img th:src="@{/MissingPage.png}"/>
+    <p>There seems to be a problem with the page you requested
+        (<span th:text="${path}">PATH</span>).</p>
+    <p th:text="${'Details: ' + message}"></p>
+</body>
+</html>

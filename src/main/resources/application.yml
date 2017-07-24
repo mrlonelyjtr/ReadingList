@@ -1,0 +1,25 @@
+amazon:
+  associate_id: mrlonelyjtr
+
+error:
+  whitelabel:
+    enabled: false
+
+---
+
+spring:
+  profiles: development
+
+logging:
+  level:
+    root: debug
+
+---
+
+spring:
+  profiles: production
+
+logging:
+  file: Logback.log
+  level:
+    root: warn
