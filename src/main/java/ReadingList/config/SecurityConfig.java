@@ -22,9 +22,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
+                .csrf().disable()
                 .authorizeRequests()
-                    .antMatchers("/").hasAuthority("READER")
-                    .antMatchers("/**").permitAll()
+                    .antMatchers("/readingList").hasAuthority("READER")
+                    .antMatchers("/readingList/**").permitAll()
                 .and()
                 .formLogin()
                     .loginPage("/login")
@@ -34,13 +35,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth
-                .userDetailsService(username -> {
-                    UserDetails userDetails = readerRepository.findOne(username);
-                    if (userDetails != null) {
-                        return userDetails;
-                    }
-                    throw new UsernameNotFoundException("User '" + username + "' not found.");
-                });
+                .userDetailsService(userDetailsService());
+    }
+
+    @Bean
+    public UserDetailsService userDetailsService() {
+        return username -> {
+            UserDetails userDetails = readerRepository.findOne(username);
+            if (userDetails != null) {
+                return userDetails;
+            }
+            throw new UsernameNotFoundException("User '" + username + "' not found.");
+        };
     }
 
 }
