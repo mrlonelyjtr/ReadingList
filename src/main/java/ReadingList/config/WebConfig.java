@@ -12,6 +12,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
+        registry.addRedirectViewController("/", "/readingList");
         registry.addViewController("/login").setViewName("login");
     }
 
@@ -19,7 +20,5 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
         argumentResolvers.add(new ReaderHandlerMethodArgumentResolver());
     }
-
-
 
 }

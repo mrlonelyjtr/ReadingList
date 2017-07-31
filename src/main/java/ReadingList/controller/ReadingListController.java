@@ -5,16 +5,14 @@ import ReadingList.model.Reader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 import ReadingList.model.Book;
 import ReadingList.model.ReadingListRepository;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
 
 @Controller
-@RequestMapping("/")
+@RequestMapping("/readingList")
 public class ReadingListController {
 
     @Autowired
@@ -40,6 +38,6 @@ public class ReadingListController {
     public String addToReadingList(Reader reader, Book book){
         book.setReader(reader);
         readingListRepository.save(book);
-        return "redirect:/";
+        return "redirect:/readingList";
     }
 }
