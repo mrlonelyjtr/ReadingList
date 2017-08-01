@@ -13,6 +13,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import static org.hamcrest.Matchers.*;
 import static org.springframework.http.MediaType.APPLICATION_FORM_URLENCODED;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -53,7 +54,7 @@ public class MockMvcWebTests {
 				.andExpect(model().attribute("reader", samePropertyValuesAs(expectedReader)))
 				.andExpect(model().attribute("amazonID", "mrlonelyjtr"));
 
-		mockMvc.perform(post("/readingList")
+		mockMvc.perform(post("/readingList").with(csrf())
 				.contentType(APPLICATION_FORM_URLENCODED)
 				.param("title", "And Then There Were None")
 				.param("author", "Agatha Christie")
