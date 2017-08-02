@@ -3,6 +3,8 @@ package ReadingList.controller;
 import ReadingList.config.AmazonProperties;
 import ReadingList.model.Reader;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.actuate.metrics.CounterService;
+import org.springframework.boot.actuate.metrics.GaugeService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -21,6 +23,12 @@ public class ReadingListController {
     @Autowired
     private AmazonProperties amazonProperties;
 
+    @Autowired
+    private CounterService counterService;
+
+    @Autowired
+    private GaugeService gaugeService;
+
     @GetMapping
     public String readersBooks(Reader reader, Model model){
         List<Book> readingList =  readingListRepository.findByReader(reader);
@@ -38,6 +46,9 @@ public class ReadingListController {
     public String addToReadingList(Reader reader, Book book){
         book.setReader(reader);
         readingListRepository.save(book);
+        counterService.increment("books.saved");
+        gaugeService.submit("books.last.saved", System.currentTimeMillis());
         return "redirect:/readingList";
     }
+
 }

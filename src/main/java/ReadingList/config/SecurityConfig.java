@@ -24,7 +24,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 //.csrf().disable()
                 .authorizeRequests()
-                    .antMatchers("/readingList").hasAuthority("READER")
+                    .antMatchers("/readingList").hasRole("READER")
+                    .antMatchers("/management/**").hasRole("ADMIN")
                     .antMatchers("/readingList/**").permitAll()
                 .and()
                 .formLogin()
@@ -35,7 +36,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth
-                .userDetailsService(userDetailsService());
+                .userDetailsService(userDetailsService())
+                .and()
+                .inMemoryAuthentication()
+                    .withUser("admin").password("4321").roles("ADMIN");
     }
 
     @Bean
