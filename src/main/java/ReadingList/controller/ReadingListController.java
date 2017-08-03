@@ -3,8 +3,8 @@ package ReadingList.controller;
 import ReadingList.config.AmazonProperties;
 import ReadingList.model.Reader;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.actuate.metrics.CounterService;
-import org.springframework.boot.actuate.metrics.GaugeService;
+import org.springframework.boot.actuate.metrics.buffer.BufferCounterService;
+import org.springframework.boot.actuate.metrics.buffer.BufferGaugeService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -24,10 +24,10 @@ public class ReadingListController {
     private AmazonProperties amazonProperties;
 
     @Autowired
-    private CounterService counterService;
+    private BufferCounterService counterService;
 
     @Autowired
-    private GaugeService gaugeService;
+    private BufferGaugeService gaugeService;
 
     @GetMapping
     public String readersBooks(Reader reader, Model model){
@@ -45,9 +45,9 @@ public class ReadingListController {
     @PostMapping
     public String addToReadingList(Reader reader, Book book){
         book.setReader(reader);
-        readingListRepository.save(book);
         counterService.increment("books.saved");
         gaugeService.submit("books.last.saved", System.currentTimeMillis());
+        readingListRepository.save(book);
         return "redirect:/readingList";
     }
 

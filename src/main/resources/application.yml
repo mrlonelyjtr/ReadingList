@@ -9,7 +9,6 @@ management:
   context-path: /management
   security:
     roles: ADMIN
-    enabled: false
 
 endpoints:
   shutdown:
